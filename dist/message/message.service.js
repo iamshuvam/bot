@@ -8,17 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessageService = void 0;
 const common_1 = require("@nestjs/common");
-const puppeteer = require("puppeteer");
+const puppeteer_1 = require("langchain/document_loaders/web/puppeteer");
 let MessageService = class MessageService {
     async loadAndTrain(webpageUrl) {
         try {
-            const browser = await puppeteer.launch();
-            const page = await browser.newPage();
-            await page.goto(webpageUrl);
-            const content = await page.content();
-            console.log(content);
-            await browser.close();
-            const vector = content;
+            const loader = new puppeteer_1.PuppeteerWebBaseLoader("https://en.wikipedia.org/wiki/Google#Early_years");
+            const docs = await loader.load();
+            console.log(docs);
         }
         catch (error) {
             console.error('Error:', error);
